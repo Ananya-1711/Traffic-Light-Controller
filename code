@@ -1,0 +1,56 @@
+const int redPin = 11;
+const int yellowPin = 7;
+const int greenPin = 5;
+const int switchPin = 3;
+const int greenTime = 3000;
+const int yellowTime = 2000;
+const int redTime = 3000;
+void setup() {
+  pinMode(redPin, OUTPUT);
+  pinMode(yellowPin, OUTPUT);
+  pinMode(greenPin, OUTPUT);
+  pinMode(switchPin, INPUT_PULLUP);
+}
+void loop() {
+  // Check if pedestrian button is pressed
+  if (digitalRead(switchPin) == HIGH) {
+    pedestrianMode();
+  } else {
+    normalCycle();
+  }
+}
+void normalCycle() {
+  // GREEN
+  digitalWrite(greenPin, HIGH);
+  digitalWrite(yellowPin, LOW);
+  digitalWrite(redPin, LOW);
+  delay(greenTime);
+  if (digitalRead(switchPin) == HIGH) {
+    pedestrianMode();
+    return;
+  }
+  // YELLOW
+  digitalWrite(greenPin, LOW);
+  digitalWrite(yellowPin, HIGH);
+  digitalWrite(redPin, LOW);
+  delay(yellowTime);
+  if (digitalRead(switchPin) == HIGH) {
+    pedestrianMode();
+    return;
+  }
+  // RED
+  digitalWrite(greenPin, LOW);
+  digitalWrite(yellowPin, LOW);
+  digitalWrite(redPin, HIGH);
+  delay(redTime);
+  if (digitalRead(switchPin) == HIGH) {
+    pedestrianMode();
+  }
+}
+void pedestrianMode() {
+  // Force RED for safe crossing
+  digitalWrite(greenPin, LOW);
+  digitalWrite(yellowPin, LOW);
+  digitalWrite(redPin, HIGH);
+  delay(redTime);
+}
